@@ -29,7 +29,7 @@ def error_404_view(request, exception):
 
 # 500 Custom Error
 def error_500_view(request):
-    return render(request, '500.html')
+    return render(request, '500.html', status=500)
 
 
 subscriber()
