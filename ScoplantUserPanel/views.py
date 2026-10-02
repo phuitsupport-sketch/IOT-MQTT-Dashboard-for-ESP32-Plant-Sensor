@@ -19,10 +19,6 @@ from django.template.loader import get_template
 import openpyxl
 from openpyxl.styles import PatternFill, Font
 from .mqtt import subscriber, publisher
-import plotly
-import plotly.express as px
-import pandas as pd
-import plotly.graph_objs as go
 import datetime
 
 
@@ -574,6 +570,11 @@ def reporting_device(request, device_id):
                     for each in lstRecords:
                         f.write(each)
                         f.write("\n")
+
+                import pandas as pd
+                import plotly
+                import plotly.express as px
+                import plotly.graph_objs as go
 
                 df = pd.read_csv(f'temp/{file_name_gen}.csv')
 
