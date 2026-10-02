@@ -55,7 +55,7 @@ This Django project is designed to be easy to set up and run. Here are the steps
 ### Prerequisites
 Before you can run this Django project, you need to have the following software installed:
 
-Download and install MongoDB from  <a href="https://www.mongodb.com/try/download/community?tck=docs_server">here</a>
+SQLite is included with Python; no separate database server is required.
 
 Python 3.9 or later
 
@@ -122,6 +122,17 @@ Password (again): ********
 Note: After filling a row, press “Enter” to fill the other information.
 
 Now the superuser will be created if we have entered all fields correctly.
+
+
+## Free deployment (Render)
+
+The project uses Django's built-in SQLite database, stored in `db.sqlite3`; MongoDB Atlas is not required. The repository includes a Render Blueprint for a free web service. Before deploying:
+
+1. Push this project to a GitHub repository that you own (the current `origin` points to the upstream project and may not allow pushes).
+2. In Render, create a **Blueprint** from your GitHub repository. The Blueprint generates `DJANGO_SECRET_KEY` and configures the `*.onrender.com` host automatically.
+3. Wait for the first deployment to finish. Render will create migrations, collect static files, run migrations and serve the app at its generated `https://...onrender.com` address. Create an administrator with `python manage.py createsuperuser` using Render Shell if available.
+
+**Important:** Render's free web service has an ephemeral filesystem. The site can run with SQLite, but its database file (users, devices and logs) may be lost when the service restarts or is redeployed. Use a host with persistent storage, or a persistent external database, before entering data you need to keep. Render free services may also sleep when idle. The MQTT code connects to the public Eclipse test broker, which is not suitable for production and may not provide reliable telemetry.
 
 
 ## License

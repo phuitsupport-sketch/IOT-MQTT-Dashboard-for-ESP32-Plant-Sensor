@@ -9,6 +9,10 @@ from datetime import datetime
 
 broker = "mqtt.eclipseprojects.io"
 def subscriber():
+    def on_connect(client, userdata, flags, rc):
+        if rc == 0:
+            client.subscribe("scoplant/p/sensor/v1/+")
+
     def on_message(client, userdata, message):
         data = message.payload.decode("utf-8")
         loaded = json.loads(data)
@@ -29,12 +33,10 @@ def subscriber():
                             Temperature_Log=Temprature, SoilMoisture_Log=SoilMoisture, SoilTemperature_Log=Soil_temprature, EC_Log=Ec)
     client = mqtt.Client(client_id="scoplantuser",
                         clean_session=False)
-    client.connect(broker)
-    client.loop_start()
-
-    client.subscribe("scoplant/p/sensor/v1/$")
-
+    client.on_connect = on_connect
     client.on_message = on_message
+    client.connect_async(broker, port=1883, keepalive=60)
+    client.loop_start()
 
 
 
